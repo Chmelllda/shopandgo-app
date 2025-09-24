@@ -1,14 +1,10 @@
 // app/api/orders/[id]/refund/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe";
+import { stripe } from "../../../../../lib/stripe"; // <- relativní cesta
 
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    // refund vytvoříme podle PaymentIntent ID
-    const refund = await stripe.refunds.create({
-      payment_intent: params.id,
-    });
-
+    const refund = await stripe.refunds.create({ payment_intent: params.id });
     return NextResponse.json(refund, { status: 200 });
   } catch (error: any) {
     console.error("Refund error:", error);
